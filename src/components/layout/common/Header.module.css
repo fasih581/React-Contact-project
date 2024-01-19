@@ -1,0 +1,11 @@
+.head h3.title {
+  font-size: xx-large;
+  font-weight: bolder;
+}
+
+.head {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

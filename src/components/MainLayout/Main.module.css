@@ -1,0 +1,10 @@
+.box {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.mainlayaout {
+  background: blue;
+  color: #fff;
+  margin: 0 0 30px 0;
+}

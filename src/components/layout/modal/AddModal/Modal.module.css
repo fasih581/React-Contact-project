@@ -1,0 +1,125 @@
+/* #root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+.contact_addBox {
+  width: 790px;
+  background-color: #fff;
+  padding: 20px;
+  height: 850px;
+  border-radius: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 99;
+}
+
+.overlay {
+  background: rgba(5, 3, 16, 0.8);
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  z-index: 90;
+}
+
+/* Add Box Css */
+
+.addBoxHead {
+  font-size: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.addBoxHead h3 {
+  font-weight: 700;
+}
+
+.addBoxHead button.HeadCl {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: none;
+  font-size: 24px;
+}
+
+.contact_addBox button.HeadCl:hover {
+  background: blue;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.form-label {
+  font-size: 17px !important;
+  font-weight: 500 !important;
+}
+
+.ImageDiv {
+  margin: 20px 0;
+  margin: 24px 0;
+  width: 205px;
+  height: 185px;
+  border-radius: 15px;
+  border: 4px dashed;
+  border-color: blue;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+img.ImgDiv {
+  width: 190px;
+  height: 170px;
+  border-radius: 15px;
+}
+
+.addFooter {
+  display: flex;
+  gap: 10px;
+  justify-content: end;
+}
+
+.addFooter .btn {
+  font-size: 18px;
+  padding: 10px 30px;
+  border-radius: 10px;
+  font-weight: 900;
+  background: blue;
+}
+
+.addFooter .btn.cls {
+  background: none;
+  color: blue;
+}
+
+/* form */
+
+.form-control:focus {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  border-color: #32b90d !important;
+  outline: 0;
+  box-shadow: unset !important;
+}
+
+.formInput.form-control#Image:focus,
+.formInput.form-control#phoneNo:focus,
+.formInput.form-control#email:focus,
+.formInput.form-control#name:focus {
+  border-color: #fc8181 !important;
+  box-shadow: unset !important;
+}
