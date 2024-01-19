@@ -2,7 +2,7 @@ import React from "react";
 // import DeletContact from "../layout/modal/DeletModal/DeletModal"
 import MainCard from "..//layout/MainCard/MainCard";
 import Header from "../layout/common/Header";
-import Button from "../layout/common/button/Button";
+import Pagination from "../layout/Pagination/Pagination";
 import MainLayoutCss from "./Main.module.css";
 
 const Mainloyaout = () => {
@@ -14,8 +14,16 @@ const Mainloyaout = () => {
         </div>
       </div>
       <div className={MainLayoutCss.box}>
-        <Button />
+        <div className={MainLayoutCss.bodyHead}>
+          <div className={MainLayoutCss.search}>
+            <input type="text" name="" placeholder="Search" />
+          </div>
+          <button className={MainLayoutCss.btn}>Add Contact</button>
+        </div>
         <MainCard />
+        <div className={MainLayoutCss.footer}>
+          <Pagination />
+        </div>
       </div>
     </>
   );
