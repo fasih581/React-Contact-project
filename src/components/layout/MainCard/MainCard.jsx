@@ -1,9 +1,15 @@
-import MainCss from "./MainCard.module.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Button from "react-bootstrap/Button";
-import { MdDelete, MdModeEdit } from "react-icons/md";
+import MainCss from "./MainCard.module.css";//Css link
+import "bootstrap/dist/css/bootstrap.min.css";//bootstrap css
+import Button from "react-bootstrap/Button";//bootstrap 
+import { MdDelete, MdModeEdit } from "react-icons/md";//Reat icon
+import DeletModal from "../modal/DeletModal/DeletModal"; //Modal
+import EditModal from "../modal/EditModal/EditModal";
+import { useState } from "react";
 
 const MainCard = () => {
+  const [openEditModal, setEditModal] = useState(false);
+  const [openDeletModal, setDeletModal] = useState(false);
+
   return (
     <>
       <div className={MainCss.Box}>
@@ -27,12 +33,19 @@ const MainCard = () => {
             </div>
           </div>
           <div className={MainCss.btnBody}>
-            <Button variant="primary">
+            <Button variant="primary" onClick={() => {setEditModal(true)}}>
               <MdModeEdit />
             </Button>{" "}
-            <Button variant="danger">
+            {openEditModal && <EditModal closeEditModal={setEditModal} />}
+            <Button
+              variant="danger"
+              onClick={() => {
+                setDeletModal(true);
+              }}
+            >
               <MdDelete />
             </Button>{" "}
+            {openDeletModal && <DeletModal closeModal={setDeletModal} />}
           </div>
         </div>
         {/* ===== */}

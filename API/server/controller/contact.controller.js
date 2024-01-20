@@ -88,9 +88,50 @@ exports.postContact = asyncHandler(async (req, res) => {
 //   }
 // });
 
+// exports.findAllContact = asyncHandler(async (req, res) => {
+//   try {
+//     const { search, filter, sort, page, limit } = req.query;
+
+//     let query = {};
+
+//     if (search) {
+//       query.$or = [
+//         { name: { $regex: new RegExp(search, "i") } },
+//         { email: { $regex: new RegExp(search, "i") } },
+//       ];
+//     }
+
+//     if (filter) {
+//       // Assuming 'filter' is an object with specific fields to filter on
+//       Object.assign(query, filter);
+//     }
+
+//     // const skip = (page - 1) * limit;
+
+//     const contacts = await contactModel
+//       .find(query)
+//       .sort(sort)
+//       // .skip(skip)
+//       .limit(parseInt(limit, 10));
+
+//     res.status(200).json({
+//       contacts,
+//       page: parseInt(page, 10),
+//       limit: parseInt(limit, 10),
+//       totalContacts: await contactModel.countDocuments(query),
+//     });
+//   } catch (error) {
+//     console.error("Error fetching contacts:", error);
+//     res.status(500).json({
+//       message: "Internal server error fetching contacts",
+//       error: error.message || "Internal Server Error",
+//     });
+//   }
+// });
+
 exports.findAllContact = asyncHandler(async (req, res) => {
   try {
-    const { search, filter, sort, page = 1, limit = 2 } = req.query;
+    const { search, filter, sort } = req.query;
 
     let query = {};
 
@@ -102,23 +143,33 @@ exports.findAllContact = asyncHandler(async (req, res) => {
     }
 
     if (filter) {
-      // Assuming 'filter' is an object with specific fields to filter on
       Object.assign(query, filter);
     }
 
-    const skip = (page - 1) * limit;
+    // Aggregation pipeline for pagination
+    const matchStage = { $match: query };
+    const sortStage = { $sort: sort ? { [sort]: 1 } : { createdAt: -1 } };
 
-    const contacts = await contactModel
-      .find(query)
-      .sort(sort)
-      .skip(skip)
-      .limit(parseInt(limit, 10));
+    const aggregationPipeline = [matchStage, sortStage];
+
+    // Add default pagination stages
+    const defaultSkip = 0;
+    const defaultLimit = 10;
+
+    aggregationPipeline.push({ $skip: defaultSkip }, { $limit: defaultLimit });
+
+    const contacts = await contactModel.aggregate(aggregationPipeline);
+
+    // Get total count without pagination
+    const currentPage = req.query.currentPage
+      ? parseInt(req.query.currentPage)
+      : 1;
+    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 10;
+    const totalContacts = await contactModel.countDocuments(query);
 
     res.status(200).json({
       contacts,
-      page: parseInt(page, 10),
-      limit: parseInt(limit, 10),
-      totalContacts: await contactModel.countDocuments(query),
+      totalContacts,
     });
   } catch (error) {
     console.error("Error fetching contacts:", error);

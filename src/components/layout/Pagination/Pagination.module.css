@@ -1,4 +1,30 @@
 .Pagination{
     display: flex;
-    gap: 30px;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 80px;
 }
+
+.Page_item{
+    list-style: none;
+    background: blue;
+    font-size: 20px;
+    padding: 6px 20px;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.Page_link{
+    color: #fff;
+    text-decoration: none;
+}
+
+.Page_item:active{
+    color: black;
+    background: #fff;
+}
+
+/* .Page_item:focus{
+    color: black;
+    background: #fff;
+} */

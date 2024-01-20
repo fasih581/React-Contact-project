@@ -1,11 +1,13 @@
-import React from "react";
-// import DeletContact from "../layout/modal/DeletModal/DeletModal"
+import React, { useState } from "react";
 import MainCard from "..//layout/MainCard/MainCard";
 import Header from "../layout/common/Header";
+import AddModal from "../layout/modal/AddModal/AddModal";
 import Pagination from "../layout/Pagination/Pagination";
 import MainLayoutCss from "./Main.module.css";
 
 const Mainloyaout = () => {
+  const [openModal, setopenModal] = useState(false);
+
   return (
     <>
       <div className={MainLayoutCss.mainlayaout}>
@@ -13,16 +15,28 @@ const Mainloyaout = () => {
           <Header />
         </div>
       </div>
-      <div className={MainLayoutCss.box}>
-        <div className={MainLayoutCss.bodyHead}>
-          <div className={MainLayoutCss.search}>
-            <input type="text" name="" placeholder="Search" />
+      <div className={MainLayoutCss.mainBody}>
+        <div className={MainLayoutCss.box}>
+          <div className={MainLayoutCss.bodyHead}>
+            <div className={MainLayoutCss.search}>
+              <input type="text" name="" placeholder="Search" />
+            </div>
+            <button
+              className={MainLayoutCss.btn}
+              onClick={() => {
+                setopenModal(true);
+              }}
+            >
+              Add Contact
+            </button>
+            {openModal && <AddModal closeModal={setopenModal} />}
           </div>
-          <button className={MainLayoutCss.btn}>Add Contact</button>
-        </div>
-        <MainCard />
-        <div className={MainLayoutCss.footer}>
-          <Pagination />
+          <div className={MainLayoutCss.body}>
+            <MainCard />
+          </div>
+          <div className={MainLayoutCss.footer}>
+            <Pagination />
+          </div>
         </div>
       </div>
     </>

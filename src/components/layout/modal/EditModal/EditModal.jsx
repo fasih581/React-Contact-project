@@ -11,7 +11,7 @@ const onSubmit = (values) => {
   // Add your submit logic here
 };
 
-const EditModal = () => {
+const EditModal = ({ closeEditModal }) => {
   const [file, setFile] = useState();
 
   const EditContact = useFormik({
@@ -36,7 +36,7 @@ const EditModal = () => {
       <div className={EditCss.contact_Box}>
         <div className={EditCss.BoxHead}>
           <h3>Edit Contact</h3>
-          <button className={EditCss.HeadCl}>
+          <button className={EditCss.HeadCl} onClick={() => closeEditModal(false)}>
             <IoCloseSharp className={EditCss.icon} />
           </button>
         </div>
@@ -144,7 +144,7 @@ const EditModal = () => {
           </div>
           <hr className={EditCss.line} />
           <div className={EditCss.Footer}>
-            <Button className={`${EditCss.btn} ${EditCss.cls}`}>Close</Button>
+            <Button className={`${EditCss.btn} ${EditCss.cls}`} onClick={() => closeEditModal(false)}>Close</Button>
             <Button type="submit" className={`${EditCss.btn} ${EditCss.sve}`}>
               Edit
             </Button>
