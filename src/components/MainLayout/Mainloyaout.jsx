@@ -4,9 +4,12 @@ import Header from "../layout/common/Header";
 import AddModal from "../layout/modal/AddModal/AddModal";
 import Pagination from "../layout/Pagination/Pagination";
 import MainLayoutCss from "./Main.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { addOpenModal } from "../../ReduxToolkit/Features/contactModalSlice";
 
 const Mainloyaout = () => {
-  const [openModal, setopenModal] = useState(false);
+  const dispatch = useDispatch();
+  const {isAddModal} = useSelector((state) => state.modal);
 
   return (
     <>
@@ -24,12 +27,12 @@ const Mainloyaout = () => {
             <button
               className={MainLayoutCss.btn}
               onClick={() => {
-                setopenModal(true);
+                dispatch(addOpenModal());
               }}
             >
               Add Contact
             </button>
-            {openModal && <AddModal closeModal={setopenModal} />}
+            {isAddModal && <AddModal />}
           </div>
           <div className={MainLayoutCss.body}>
             <MainCard />

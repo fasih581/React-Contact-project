@@ -5,13 +5,19 @@ import { Form, Button, Image } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useFormik } from "formik";
 import { EditContactschema } from "../../../../validation/validation";
+import { useDispatch } from "react-redux";
+import {
+  editCloseModal
+} from "../../../../ReduxToolkit/Features/contactModalSlice";
 
 const onSubmit = (values) => {
   console.log("Submitted values:", values);
   // Add your submit logic here
 };
 
-const EditModal = ({ closeEditModal }) => {
+const EditModal = () => {
+  const dispatch = useDispatch();
+
   const [file, setFile] = useState();
 
   const EditContact = useFormik({
@@ -36,7 +42,7 @@ const EditModal = ({ closeEditModal }) => {
       <div className={EditCss.contact_Box}>
         <div className={EditCss.BoxHead}>
           <h3>Edit Contact</h3>
-          <button className={EditCss.HeadCl} onClick={() => closeEditModal(false)}>
+          <button className={EditCss.HeadCl} onClick={() => dispatch(editCloseModal())}>
             <IoCloseSharp className={EditCss.icon} />
           </button>
         </div>
@@ -144,7 +150,7 @@ const EditModal = ({ closeEditModal }) => {
           </div>
           <hr className={EditCss.line} />
           <div className={EditCss.Footer}>
-            <Button className={`${EditCss.btn} ${EditCss.cls}`} onClick={() => closeEditModal(false)}>Close</Button>
+            <Button className={`${EditCss.btn} ${EditCss.cls}`} onClick={() => dispatch(editCloseModal())}>Close</Button>
             <Button type="submit" className={`${EditCss.btn} ${EditCss.sve}`}>
               Edit
             </Button>

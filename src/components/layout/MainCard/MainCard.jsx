@@ -1,14 +1,18 @@
-import MainCss from "./MainCard.module.css";//Css link
-import "bootstrap/dist/css/bootstrap.min.css";//bootstrap css
-import Button from "react-bootstrap/Button";//bootstrap 
-import { MdDelete, MdModeEdit } from "react-icons/md";//Reat icon
+import MainCss from "./MainCard.module.css"; //Css link
+import "bootstrap/dist/css/bootstrap.min.css"; //bootstrap css
+import Button from "react-bootstrap/Button"; //bootstrap
+import { MdDelete, MdModeEdit } from "react-icons/md"; //Reat icon
 import DeletModal from "../modal/DeletModal/DeletModal"; //Modal
 import EditModal from "../modal/EditModal/EditModal";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  editOpenModal,
+  deletOpenModal,
+} from "../../../ReduxToolkit/Features/contactModalSlice";
 
 const MainCard = () => {
-  const [openEditModal, setEditModal] = useState(false);
-  const [openDeletModal, setDeletModal] = useState(false);
+  const dispatch = useDispatch();
+  const { isEditModal, isDeletModal } = useSelector((state) => state.modal);
 
   return (
     <>
@@ -33,19 +37,24 @@ const MainCard = () => {
             </div>
           </div>
           <div className={MainCss.btnBody}>
-            <Button variant="primary" onClick={() => {setEditModal(true)}}>
+            <Button
+              variant="primary"
+              onClick={() => {
+                dispatch(editOpenModal());
+              }}
+            >
               <MdModeEdit />
             </Button>{" "}
-            {openEditModal && <EditModal closeEditModal={setEditModal} />}
+            {isEditModal && <EditModal />}
             <Button
               variant="danger"
               onClick={() => {
-                setDeletModal(true);
+                dispatch(deletOpenModal());
               }}
             >
               <MdDelete />
             </Button>{" "}
-            {openDeletModal && <DeletModal closeModal={setDeletModal} />}
+            {isDeletModal && <DeletModal />}
           </div>
         </div>
         {/* ===== */}

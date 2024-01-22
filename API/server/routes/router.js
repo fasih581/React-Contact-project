@@ -7,7 +7,7 @@ const controller = require("../controller/contact.controller");
 route.get("/contact/:id", controller.findContact)
 route.get("/contact", controller.findAllContact)
 route.post("/contact", controller.postContact)
-route.put("/contact", controller.updateContact)
-route.delete("/contact", controller.deleteContact)
+route.put("/contact/:id", controller.updateContact)
+route.delete("/contact/:id", controller.deleteContact)
 
 module.exports = route;

@@ -5,13 +5,17 @@ import { Form, Button, Image } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useFormik } from "formik";
 import { AddContactschema } from "../../../../validation/validation";
+import {addCloseModal} from "../../../../ReduxToolkit/Features/contactModalSlice"
+import { useDispatch, useSelector } from "react-redux";
 
 const onSubmit = (values) => {
   console.log("Submitted values:", values);
   // Add your submit logic here
 };
 
-const AddModal = ({ closeModal }) => {
+const AddModal = () => {
+  const dispatch = useDispatch();
+  const { isAddModal } = useSelector((state) => state.modal);
   const [file, setFile] = useState();
 
   const AddContact = useFormik({
@@ -36,7 +40,7 @@ const AddModal = ({ closeModal }) => {
         <div className={ModalCss.contact_addBox}>
           <div className={ModalCss.addBoxHead}>
             <h3>Add Contact</h3>
-            <button className={ModalCss.HeadCl} onClick={() => closeModal(false)}>
+            <button className={ModalCss.HeadCl} onClick={() => dispatch(addCloseModal())}>
               <IoCloseSharp
                 className={ModalCss.icon}   
               />
@@ -144,7 +148,7 @@ const AddModal = ({ closeModal }) => {
             <div className={ModalCss.addFooter}>
               <Button
                 className={`${ModalCss.btn} ${ModalCss.cls}`}
-                onClick={() => closeModal(false)}
+                onClick={() => dispatch(addCloseModal())}
               >
                 Close
               </Button>
