@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
 const contactSchema = new mongoose.Schema({
-    Image:{
-        type: String,
-        required:[true, "Contact Image required"]
-    }, 
     name:{
         type: String,
         required:[true, "Contact name required"]

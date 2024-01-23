@@ -1,83 +1,63 @@
-import React, { useState } from "react";
+import React from "react";
 import ModalCss from "./Modal.module.css";
 import { IoCloseSharp } from "react-icons/io5";
 import { Form, Button, Image } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useFormik } from "formik";
 import { AddContactschema } from "../../../../validation/validation";
-import {addCloseModal} from "../../../../ReduxToolkit/Features/contactModalSlice"
 import { useDispatch, useSelector } from "react-redux";
+import { addCloseModal } from "../../../../ReduxToolkit/Features/contactModalSlice";
+import { createContact } from "../../../../ReduxToolkit/Features/Api/createContact";
 
-const onSubmit = (values) => {
-  console.log("Submitted values:", values);
-  // Add your submit logic here
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const onSubmit = async (values, actions) => {
+  await new Promise((resolve) => setTimeout(resolve, 100));
+  actions.resetForm();
 };
 
 const AddModal = () => {
   const dispatch = useDispatch();
-  const { isAddModal } = useSelector((state) => state.modal);
-  const [file, setFile] = useState();
+
+  // useEffect(() => {
+  //   dispatch(createContact());
+  // }, [dispatch]);
+
+  const data = useSelector((state) => state.postMethod.createContacts);
 
   const AddContact = useFormik({
     initialValues: {
-      image: "",
       name: "",
       phoneNo: "",
       email: "",
     },
     validationSchema: AddContactschema,
-    onSubmit: onSubmit,
+    onSubmit: async (data, actions) => {
+      await handleSumbitt(data, actions);
+      actions.resetForm();
+    },
   });
 
-  function ChangeImg(e) {
-    console.log(e.target.files);
-    setFile(URL.createObjectURL(e.target.files[0]));
-  }
-
+  const handleSumbitt = (data, actions) => {
+    console.log("Form Data:", data);  // Log the form data
+    dispatch(createContact(data));
+  };
+  
   return (
     <>
       <div className={ModalCss.overlay}>
         <div className={ModalCss.contact_addBox}>
           <div className={ModalCss.addBoxHead}>
             <h3>Add Contact</h3>
-            <button className={ModalCss.HeadCl} onClick={() => dispatch(addCloseModal())}>
-              <IoCloseSharp
-                className={ModalCss.icon}   
-              />
+            <button
+              className={ModalCss.HeadCl}
+              onClick={() => dispatch(addCloseModal())}
+            >
+              <IoCloseSharp className={ModalCss.icon} />
             </button>
           </div>
           <hr className={ModalCss.line} />
           <Form onSubmit={AddContact.handleSubmit}>
             <div className={ModalCss.addBoxBody}>
-              <div className={ModalCss.ImageDiv}>
-                <Image
-                  className={ModalCss.ImgDiv}
-                  src={file || "http://surl.li/plhps"}
-                />
-              </div>
-              <Form.Group controlId="image" className="mb-3">
-                <Form.Label>Image</Form.Label>
-                <Form.Control
-                  type="file"
-                  name="image"
-                  onChange={(e) => {
-                    AddContact.handleChange(e);
-                    ChangeImg(e);
-                  }}
-                  onBlur={AddContact.handleBlur}
-                  className={
-                    AddContact.errors.image && AddContact.touched.image
-                      ? "formInput form-control is-invalid"
-                      : "formInput form-control"
-                  }
-                />
-                {AddContact.errors.image && AddContact.touched.image && (
-                  <div className="invalid-feedback">
-                    {AddContact.errors.image}
-                  </div>
-                )}
-              </Form.Group>
-
               <Form.Group className="mb-3" controlId="name">
                 <Form.Label>Name</Form.Label>
                 <Form.Control

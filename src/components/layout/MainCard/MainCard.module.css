@@ -1,9 +1,9 @@
-.Box {
+/* .Box {
   display: grid;
   justify-content: center;
   gap: 25px;
   grid-template-columns: repeat(2, 1fr);
-}
+} */
 
 .boxBody {
   display: flex;

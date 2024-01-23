@@ -1,13 +1,9 @@
 import React from "react";
 import ReactPaginate from "react-paginate";
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import PgCss from "./Pagination.module.css"
+import PgCss from "./Pagination.module.css";
 
-const Pagination = () => {
-
-    const handlePageClick = (data) => {
-        console.log(data.selected);
-      };
+const Pagination = ({ pageCount, handlePageClick }) => {
+  console.log("Page Count:", pageCount);
 
   return (
     <>
@@ -15,7 +11,7 @@ const Pagination = () => {
         previousLabel="< previous"
         nextLabel="next >"
         breakLabel={"..."}
-        pageCount={20}
+        pageCount={pageCount}
         marginPagesDisplayed={3}
         pageRangeDisplayed={3}
         onPageChange={handlePageClick}

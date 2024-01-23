@@ -5,7 +5,6 @@ import 'yup-phone';
 //   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 export const AddContactschema = yup.object().shape({
-  image: yup.string().required("Image  is required!"),
   name: yup.string().required("Please Enter Name!"),
   phoneNo: yup
     .string()
@@ -22,7 +21,6 @@ export const AddContactschema = yup.object().shape({
 });
 
 export const EditContactschema = yup.object().shape({
-  imageEdit: yup.string().required("Image  is required!"),
   nameEdit: yup.string().required("Please Enter Name!"),
   phoneNoEdit: yup
     .string()

@@ -22,7 +22,6 @@ const EditModal = () => {
 
   const EditContact = useFormik({
     initialValues: {
-      imageEdit: "",
       nameEdit: "",
       phoneNoEdit: "",
       emailEdit: "",
@@ -49,35 +48,6 @@ const EditModal = () => {
         <hr className={EditCss.line} />
         <Form onSubmit={EditContact.handleSubmit}>
           <div className={EditCss.editBoxBody}>
-            <div className={EditCss.ImageDiv}>
-              <Image
-                className={EditCss.ImgDiv}
-                src={file || "http://surl.li/plhps"}
-              />
-            </div>
-            <Form.Group controlId="imageEdit" className="mb-3">
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type="file"
-                name="imageEdit"
-                onChange={(e) => {
-                  EditContact.handleChange(e);
-                  ChangeImg(e);
-                }}
-                onBlur={EditContact.handleBlur}
-                className={
-                  EditContact.errors.imageEdit && EditContact.touched.imageEdit
-                    ? "formInput form-control is-invalid"
-                    : "formInput form-control"
-                }
-              />
-              {EditContact.errors.imageEdit &&
-                EditContact.touched.imageEdit && (
-                  <div className="invalid-feedback">
-                    {EditContact.errors.imageEdit}
-                  </div>
-                )}
-            </Form.Group>
 
             <Form.Group className="mb-3" controlId="nameEdit">
               <Form.Label>Name</Form.Label>
