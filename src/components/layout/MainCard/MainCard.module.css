@@ -67,3 +67,11 @@ img.ImgDiv {
   align-items: center;
   justify-content: center;
 }
+
+td.tablebtn {
+  width: 106px !important;
+}
+
+/* .thBtn{
+  width: 0px;
+} */

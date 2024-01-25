@@ -1,28 +1,27 @@
 import React from "react";
 import ModalCss from "./Modal.module.css";
+// bootstrap
 import { IoCloseSharp } from "react-icons/io5";
-import { Form, Button, Image } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Form, Button } from "react-bootstrap";
+// useFormik and validation
 import { useFormik } from "formik";
 import { AddContactschema } from "../../../../validation/validation";
+
 import { useDispatch, useSelector } from "react-redux";
 import { addCloseModal } from "../../../../ReduxToolkit/Features/contactModalSlice";
-import { createContact } from "../../../../ReduxToolkit/Features/Api/createContact";
+import { createContact } from "../../../../ReduxToolkit/Features/Api/Slice";
+import { getData } from "../../../../ReduxToolkit/Features/Api/Slice";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-
-const onSubmit = async (values, actions) => {
-  await new Promise((resolve) => setTimeout(resolve, 100));
-  actions.resetForm();
-};
+// const onSubmit = async (values, actions) => {
+//   await new Promise((resolve) => setTimeout(resolve, 100));
+//   actions.resetForm();
+// };
 
 const AddModal = () => {
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(createContact());
-  // }, [dispatch]);
-
-  const data = useSelector((state) => state.postMethod.createContacts);
+  const data = useSelector((state) => state.data.createContacts);
 
   const AddContact = useFormik({
     initialValues: {
@@ -32,16 +31,21 @@ const AddModal = () => {
     },
     validationSchema: AddContactschema,
     onSubmit: async (data, actions) => {
-      await handleSumbitt(data, actions);
+      handleSumbitt(data, actions);
       actions.resetForm();
+       dispatch(getData());
     },
   });
 
   const handleSumbitt = (data, actions) => {
-    console.log("Form Data:", data);  // Log the form data
-    dispatch(createContact(data));
+    console.log("Form Data:", data);
+    dispatch(createContact(data))
+    .then(() => {
+      dispatch(addCloseModal())
+      dispatch(getData());
+    })
   };
-  
+
   return (
     <>
       <div className={ModalCss.overlay}>

@@ -21,8 +21,8 @@ export const AddContactschema = yup.object().shape({
 });
 
 export const EditContactschema = yup.object().shape({
-  nameEdit: yup.string().required("Please Enter Name!"),
-  phoneNoEdit: yup
+  name: yup.string().required("Please Enter Name!"),
+  phoneNo: yup
     .string()
     // .phone(null, true, "Invalid phone number!")
     .typeError("That doesn't look like a phone number!")
@@ -30,7 +30,7 @@ export const EditContactschema = yup.object().shape({
     // .integer("A phone number can't include a decimal point!")
     .min(10)
     .required("Please Enter Phone Number!"),
-  emailEdit: yup
+  email: yup
     .string()
     .email("Please Enter a valid Email")
     .required("Please Enter Email!"),

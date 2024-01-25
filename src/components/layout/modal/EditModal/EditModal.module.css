@@ -108,6 +108,11 @@ img.ImgDiv {
   color: blue;
 }
 
+.load{
+  color: red;
+  font-size: 35px ;
+}
+
 /* form */
 
 .form-control:focus {

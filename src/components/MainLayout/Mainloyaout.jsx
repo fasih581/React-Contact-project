@@ -71,31 +71,31 @@ import Pagination from "../layout/Pagination/Pagination";
 import MainLayoutCss from "./Main.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addOpenModal } from "../../ReduxToolkit/Features/contactModalSlice";
-import { getData } from "../../ReduxToolkit/Features/Api/get.Slice";
+import { getData } from "../../ReduxToolkit/Features/Api/Slice";
 
 const Mainloyaout = () => {
   const dispatch = useDispatch();
   const { isAddModal } = useSelector((state) => state.modal);
 
   const { isLoading, data, error, pageCount, limit } = useSelector(
-    (state) => state.getMethod
+    (state) => state.data
   );
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [search, setSearch] = useState("");
 
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected + 1);
   };
 
   const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-    setPage(1);
+    setSearch(e.target.value);
+    setCurrentPage(1);
   };
 
   useEffect(() => {
-    dispatch(getData({ page: currentPage, limit, search: searchTerm }));
-  }, [dispatch, currentPage, limit, searchTerm]);
+    dispatch(getData({ page: currentPage, limit, search: search }));
+  }, [dispatch, currentPage, limit, search]);
 
   return (
     <>
@@ -112,7 +112,7 @@ const Mainloyaout = () => {
                 type="text"
                 name=""
                 placeholder="Search"
-                value={searchTerm}
+                value={search}
                 onChange={handleSearchChange}
               />
             </div>
@@ -127,7 +127,7 @@ const Mainloyaout = () => {
             {isAddModal && <AddModal />}
           </div>
           <div className={MainLayoutCss.body}>
-            <MainCard />
+            <MainCard currentPage={currentPage}/>
           </div>
           <div className={MainLayoutCss.footer}>
             <Pagination

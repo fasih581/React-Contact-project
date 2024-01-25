@@ -1,28 +1,22 @@
-import { useEffect } from "react";
-import MainCss from "./MainCard.module.css"; //Css link
-import "bootstrap/dist/css/bootstrap.min.css"; //bootstrap css
-import Button from "react-bootstrap/Button"; //bootstrap
+import React, { useEffect, useState } from "react";
+import MainCss from "./MainCard.module.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
-import { MdDelete, MdModeEdit } from "react-icons/md"; //Reat icon
-import DeletModal from "../modal/DeletModal/DeletModal"; //Modal
+import { MdDelete, MdModeEdit } from "react-icons/md";
+import DeletModal from "../modal/DeletModal/DeletModal";
 import EditModal from "../modal/EditModal/EditModal";
-import { getData } from "../../../ReduxToolkit/Features/Api/get.Slice";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  editOpenModal,
-  deletOpenModal,
-} from "../../../ReduxToolkit/Features/contactModalSlice";
+import { useSelector } from "react-redux";
 
-const MainCard = () => {
-  const dispatch = useDispatch();
-  const { isEditModal, isDeletModal } = useSelector((state) => state.modal);
+const MainCard = ({ currentPage }) => {
+  const [editModalOpen, seteditModalOpen] = useState(false);
+  const [deletModalOpen, satDeletModalOpen] = useState(false);
 
-  useEffect(() => {
-    dispatch(getData());
-  }, [dispatch]);
+  const { data, pageCount, limit } = useSelector((state) => state.data);
 
-  const data = useSelector((state) => state.getMethod.data);
-  // const { isLoading, data, error, pageCount, limit } = useSelector((state) => state.getMethod);
+  const calculateSerialNumber = (index) => {
+    return (currentPage - 1) * limit + index + 1;
+  };
 
   return (
     <>
@@ -34,34 +28,44 @@ const MainCard = () => {
               <th>Name</th>
               <th>email</th>
               <th>Phone Number</th>
-              <th></th>
+              <th className={MainCss.thBtn}></th>
             </tr>
           </thead>
           <tbody>
-            {data.map((data, index) => (
-              <tr>
-                <td>{index+1}</td>
-                <td>{data.name}</td>
-                <td>{data.email}</td>
-                <td>{data.phoneNo}</td>
-                <td className="tablebtn">
+            {Array.isArray(data) && data.map((contact, index) => (
+              <tr key={contact._id}>
+                <td>{`#${calculateSerialNumber(index)}`}</td>
+                <td>{contact.name}</td>
+                <td>{contact.email}</td>
+                <td>{contact.phoneNo}</td>
+                <td className={MainCss.tablebtn}>
                   <Button
                     onClick={() => {
-                      dispatch(editOpenModal());
+                      seteditModalOpen(contact._id);
                     }}
                   >
                     <MdModeEdit />
                   </Button>{" "}
-                  {isEditModal && <EditModal />}
+                  {editModalOpen && (
+                    <EditModal
+                      editModalclose={() => seteditModalOpen(false)}
+                      contactId={editModalOpen}
+                    />
+                  )}
                   <Button
                     variant="danger"
                     onClick={() => {
-                      dispatch(deletOpenModal());
+                      satDeletModalOpen(contact._id);
                     }}
                   >
                     <MdDelete />
                   </Button>{" "}
-                  {isDeletModal && <DeletModal />}
+                  {deletModalOpen && (
+                    <DeletModal
+                      deletModalclose={() => satDeletModalOpen(false)}
+                      contactId={deletModalOpen}
+                    />
+                  )}
                 </td>
               </tr>
             ))}

@@ -1,15 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import modalReducer from "../Features/contactModalSlice";
-import getSliceReducer from "../Features/Api/get.Slice";
-import createContactReducer from "../Features/Api/createContact"
+import SliceReducer from "../Features/Api/Slice";
+// import createContactReducer from "../Features/Api/createContact"
+// import updateContactReducer from "../Features/Api/updateContact"
 
 const store = configureStore({
   reducer: {
     modal: modalReducer,
-    getMethod: getSliceReducer,
-    postMethod: createContactReducer,
+    data: SliceReducer,
+    // postMethod: createContactReducer,
+    // updateMethod: updateContactReducer,
   },
 });
 
 export default store;
-
