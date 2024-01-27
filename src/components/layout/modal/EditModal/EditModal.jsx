@@ -5,16 +5,20 @@ import { Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useFormik } from "formik";
 import { EditContactschema } from "../../../../validation/validation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getContactById,
   updateContacts,
   getData,
 } from "../../../../ReduxToolkit/Features/Api/Slice";
 
+// Toastify
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const EditModal = ({ editModalclose, contactId }) => {
-  // console.log("Edit modal id", contactId);
   const dispatch = useDispatch();
+  const {search, currentPage, limit  } = useSelector((state) => state.data);
   const [contactData, setContactData] = useState(null);
 
   useEffect(() => {
@@ -38,21 +42,23 @@ const EditModal = ({ editModalclose, contactId }) => {
       email: contactData?.email || "",
     },
     validationSchema: EditContactschema,
-    onSubmit: async (values, actions) => {
-      handleSumbitt(values, actions);
+    onSubmit: async (data, actions) => {
+      handleSumbitt(data, actions);
       actions.resetForm();
     },
     enableReinitialize: true,
   });
 
-  const handleSumbitt = (data, actions) => {
+  const handleSumbitt = async (data) => {
     try {
       console.log("Form Data:", data);
-      dispatch(updateContacts({ id: contactId, data }));
-      dispatch(getData());
+      await dispatch(updateContacts({ id: contactId, data }));
+      dispatch(getData({ search, currentPage, limit }));
       editModalclose();
+      toast.success("Contact Updating successfully!");
     } catch (error) {
       console.error("Error updating contact:", error);
+      toast.error("Error Update contact. Please try again.");
     }
   };
 

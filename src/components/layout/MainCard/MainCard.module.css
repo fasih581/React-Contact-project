@@ -72,6 +72,16 @@ td.tablebtn {
   width: 106px !important;
 }
 
-/* .thBtn{
-  width: 0px;
-} */
+.error {
+  font-size: 25px;
+  color: red;
+  font-weight: 600;
+  text-align: center;
+}
+
+.loading {
+  font-size: 25px;
+  color: red;
+  font-weight: 600;
+  text-align: center;
+}

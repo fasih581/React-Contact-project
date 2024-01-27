@@ -27,36 +27,119 @@ exports.postContact = asyncHandler(async (req, res) => {
 //Post Method End
 
 // READ ALL DATA: Get Method
+// exports.findAllContact = asyncHandler(async (req, res) => {
+//   try {
+//     const search = req.query.search || "";
+//     const limit = parseInt(req.query.limit) || 4;
+//     const page = parseInt(req.query.page) || 1;
+//     const skip = (page - 1) * limit;
+
+//     const queryPipeline = [
+//       {
+//         $match: {
+//           $or: [
+//             { name: { $regex: new RegExp(search, "i") } },
+//             { email: { $regex: new RegExp(search, "i") } },
+//           ],
+//         },
+//       },
+//       {
+//         $facet: {
+//           pageCount: [
+//             { $count: "totalCount" },
+//             {
+//               $addFields: {
+//                 pageCount: { $ceil: { $divide: ["$totalCount", limit] } },
+//                 limit: limit,
+//               },
+//             },
+//           ],
+//           contacts: [
+//             { $skip: skip },
+//             { $limit: limit },
+//             {
+//               $project: {
+//                 _id: 1,
+//                 name: 1,
+//                 email: 1,
+//                 phoneNo: 1,
+//               },
+//             },
+//           ],
+//         },
+//       },
+//     ];
+
+//     const result = await contactModel.aggregate(queryPipeline);
+
+//     const { pageCount, contacts } = result[0];
+//     const pageCountValue = pageCount.length > 0 ? pageCount[0].pageCount : 0;
+
+//     res.status(200).json({ pageCount: pageCountValue, contacts });
+//   } catch (error) {
+//     console.error("Error fetching contacts:", error);
+//     res.status(500).json({
+//       message: "Internal server error fetching contacts",
+//       error: error.message || "Internal Server Error",
+//     });
+//   }
+// });
+
+
 exports.findAllContact = asyncHandler(async (req, res) => {
   try {
     const search = req.query.search || "";
-    const filter = req.query.filter || "";
+    const limit = parseInt(req.query.limit) || 4;
+    const page = parseInt(req.query.page) || 1;
+    const skip = (page - 1) * limit;
 
-    const query = {
-      $or: [
-        { name: { $regex: new RegExp(search, "i") } },
-        { email: { $regex: new RegExp(search, "i") } },
-      ],
-    };
+    const queryPipeline = [
+      {
+        $match: {
+          $or: [
+            { name: { $regex: new RegExp(search, "i") } },
+            { email: { $regex: new RegExp(search, "i") } },
+          ],
+        },
+      },
+      {
+        $facet: {
+          metadata: [
+            { $count: "totalCount" },
+            {
+              $addFields: {
+                pageCount: { $ceil: { $divide: ["$totalCount", limit] } },
+              },
+            },
+          ],
+          contacts: [
+            { $skip: skip },
+            { $limit: limit },
+            {
+              $project: {
+                _id: 1,
+                name: 1,
+                email: 1,
+                phoneNo: 1,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $project: {
+          contacts: 1,
+          metadata: { $arrayElemAt: ["$metadata", 0] },
+        },
+      },
+    ];
 
-    const totalCount = await contactModel.countDocuments(query);
+    const result = await contactModel.aggregate(queryPipeline);
 
-    const page = req.query.page ? parseInt(req.query.page) : 1;
-    const limit = req.query.limit ? parseInt(req.query.limit) : 2;
-    // console.log("page", page, "limi", limit);
-    const pageCount = Math.ceil(totalCount / limit);
+    const { metadata, contacts } = result[0];
+    const { pageCount } = metadata;
 
-    const contacts = await contactModel
-      .find(query)
-      .skip((page - 1) * limit)
-      .limit(limit);
-
-    res.status(200).json({
-      contacts,
-      totalCount,
-      pageCount,
-      limit,
-    });
+    res.status(200).json({ pageCount, contacts });
   } catch (error) {
     console.error("Error fetching contacts:", error);
     res.status(500).json({

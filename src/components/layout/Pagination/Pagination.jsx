@@ -3,7 +3,6 @@ import ReactPaginate from "react-paginate";
 import PgCss from "./Pagination.module.css";
 
 const Pagination = ({ pageCount, handlePageClick }) => {
-
   return (
     <>
       <ReactPaginate

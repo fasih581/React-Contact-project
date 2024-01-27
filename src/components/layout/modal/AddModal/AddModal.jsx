@@ -8,6 +8,10 @@ import { Form, Button } from "react-bootstrap";
 import { useFormik } from "formik";
 import { AddContactschema } from "../../../../validation/validation";
 
+// Toastify
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { useDispatch, useSelector } from "react-redux";
 import { addCloseModal } from "../../../../ReduxToolkit/Features/contactModalSlice";
 import { createContact } from "../../../../ReduxToolkit/Features/Api/Slice";
@@ -20,8 +24,7 @@ import { getData } from "../../../../ReduxToolkit/Features/Api/Slice";
 
 const AddModal = () => {
   const dispatch = useDispatch();
-
-  const data = useSelector((state) => state.data.createContacts);
+  const {search, currentPage, limit  } = useSelector((state) => state.data);
 
   const AddContact = useFormik({
     initialValues: {
@@ -33,18 +36,26 @@ const AddModal = () => {
     onSubmit: async (data, actions) => {
       handleSumbitt(data, actions);
       actions.resetForm();
-       dispatch(getData());
+       dispatch(getData({ search, currentPage, limit }));
     },
   });
 
-  const handleSumbitt = (data, actions) => {
-    console.log("Form Data:", data);
-    dispatch(createContact(data))
-    .then(() => {
-      dispatch(addCloseModal())
-      dispatch(getData());
-    })
+  // const handleSumbitt = (data, actions) => {
+  //   dispatch(createContact(data))
+  //     dispatch(addCloseModal())
+  // };
+
+  const handleSumbitt = async (data, actions) => {
+    try {
+      await dispatch(createContact(data));
+      dispatch(addCloseModal());
+      toast.success("Contact created successfully!");
+    } catch (error) {
+      console.error("Error occurred while creating contact:", error);
+      toast.error("Error Post contact. Please try again.");
+    }
   };
+  
 
   return (
     <>

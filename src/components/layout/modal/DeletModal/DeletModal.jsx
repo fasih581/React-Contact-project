@@ -68,17 +68,19 @@ import DeletCss from "./DeletModal.module.css";
 import { IoCloseSharp } from "react-icons/io5";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact, getData } from '../../../../ReduxToolkit/Features/Api/Slice'; // Import deleteContact and getData actions
 
 const DeletModal = ({ deletModalclose, contactId }) => {
   const dispatch = useDispatch();
-
+  const {search, limit  } = useSelector((state) => state.data);
+// console.log("page",page);
   const deleteBtn = async () => {
     try {
       await dispatch(deleteContact(contactId)); 
-      await dispatch(getData());  
       deletModalclose();
+      dispatch(getData({ search, limit }));
+      
     } catch (error) {
       console.error("Error deleting contact:", error);
     }
