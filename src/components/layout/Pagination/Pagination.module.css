@@ -5,12 +5,19 @@
     margin-top: 80px;
 }
 
-.Page_item{
+.Page_item a{
     list-style: none;
     background: blue;
     font-size: 20px;
     padding: 6px 20px;
     color: #fff;
+    border-radius: 5px;
+}
+
+.Page_item {
+    list-style: none;
+    font-size: 20px;
+    padding: 6px 20px;
     border-radius: 5px;
 }
 

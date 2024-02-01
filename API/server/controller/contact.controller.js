@@ -27,64 +27,6 @@ exports.postContact = asyncHandler(async (req, res) => {
 //Post Method End
 
 // READ ALL DATA: Get Method
-// exports.findAllContact = asyncHandler(async (req, res) => {
-//   try {
-//     const search = req.query.search || "";
-//     const limit = parseInt(req.query.limit) || 4;
-//     const page = parseInt(req.query.page) || 1;
-//     const skip = (page - 1) * limit;
-
-//     const queryPipeline = [
-//       {
-//         $match: {
-//           $or: [
-//             { name: { $regex: new RegExp(search, "i") } },
-//             { email: { $regex: new RegExp(search, "i") } },
-//           ],
-//         },
-//       },
-//       {
-//         $facet: {
-//           pageCount: [
-//             { $count: "totalCount" },
-//             {
-//               $addFields: {
-//                 pageCount: { $ceil: { $divide: ["$totalCount", limit] } },
-//                 limit: limit,
-//               },
-//             },
-//           ],
-//           contacts: [
-//             { $skip: skip },
-//             { $limit: limit },
-//             {
-//               $project: {
-//                 _id: 1,
-//                 name: 1,
-//                 email: 1,
-//                 phoneNo: 1,
-//               },
-//             },
-//           ],
-//         },
-//       },
-//     ];
-
-//     const result = await contactModel.aggregate(queryPipeline);
-
-//     const { pageCount, contacts } = result[0];
-//     const pageCountValue = pageCount.length > 0 ? pageCount[0].pageCount : 0;
-
-//     res.status(200).json({ pageCount: pageCountValue, contacts });
-//   } catch (error) {
-//     console.error("Error fetching contacts:", error);
-//     res.status(500).json({
-//       message: "Internal server error fetching contacts",
-//       error: error.message || "Internal Server Error",
-//     });
-//   }
-// });
-
 
 exports.findAllContact = asyncHandler(async (req, res) => {
   try {
@@ -134,12 +76,15 @@ exports.findAllContact = asyncHandler(async (req, res) => {
       },
     ];
 
+
+    // const totalCount = await contactModel.count();
+
     const result = await contactModel.aggregate(queryPipeline);
 
     const { metadata, contacts } = result[0];
-    const { pageCount } = metadata;
-
-    res.status(200).json({ pageCount, contacts });
+    const { pageCount, totalCount} = metadata;
+    console.log(metadata?.count)
+    res.status(200).json({ pageCount, contacts, totalCount: metadata?.totalCount });
   } catch (error) {
     console.error("Error fetching contacts:", error);
     res.status(500).json({

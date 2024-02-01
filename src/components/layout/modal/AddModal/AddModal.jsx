@@ -17,10 +17,6 @@ import { addCloseModal } from "../../../../ReduxToolkit/Features/contactModalSli
 import { createContact } from "../../../../ReduxToolkit/Features/Api/Slice";
 import { getData } from "../../../../ReduxToolkit/Features/Api/Slice";
 
-// const onSubmit = async (values, actions) => {
-//   await new Promise((resolve) => setTimeout(resolve, 100));
-//   actions.resetForm();
-// };
 
 const AddModal = () => {
   const dispatch = useDispatch();
@@ -40,10 +36,6 @@ const AddModal = () => {
     },
   });
 
-  // const handleSumbitt = (data, actions) => {
-  //   dispatch(createContact(data))
-  //     dispatch(addCloseModal())
-  // };
 
   const handleSumbitt = async (data, actions) => {
     try {

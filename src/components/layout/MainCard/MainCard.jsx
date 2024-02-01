@@ -13,12 +13,12 @@ const MainCard = ({ currentPage }) => {
   const [editModalOpen, seteditModalOpen] = useState(false);
   const [deletModalOpen, satDeletModalOpen] = useState(false);
 
-  const { data, limit, isLoading, error } = useSelector((state) => state.data);
-console.log("jjuuyggfd",limit);
+  const { data, limit, isLoading, error, totalCount } = useSelector((state) => state.data); 
 
   return (
     <>
       <div className={MainCss.Box}>
+        <p className={MainCss.tCount}>total Conut:  {totalCount}</p>
         <Table striped bordered hover>
           <thead>
             <tr>
