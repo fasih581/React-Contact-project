@@ -76,15 +76,16 @@ exports.findAllContact = asyncHandler(async (req, res) => {
       },
     ];
 
-
     // const totalCount = await contactModel.count();
 
     const result = await contactModel.aggregate(queryPipeline);
 
     const { metadata, contacts } = result[0];
-    const { pageCount, totalCount} = metadata;
-    console.log(metadata?.count)
-    res.status(200).json({ pageCount, contacts, totalCount: metadata?.totalCount });
+    const { pageCount, totalCount } = metadata;
+    console.log(metadata?.count);
+    res
+      .status(200)
+      .json({ pageCount, contacts, totalCount: metadata?.totalCount });
   } catch (error) {
     console.error("Error fetching contacts:", error);
     res.status(500).json({
@@ -140,7 +141,7 @@ exports.updateContact = asyncHandler(async (req, res) => {
       req.body,
       { new: true }
     );
-console.log(updatedContact);
+    console.log(updatedContact);
     res.status(200).json(updatedContact);
   } catch (error) {
     console.error("Error updating contact:", error);
@@ -151,25 +152,6 @@ console.log(updatedContact);
   }
 });
 
-
-// exports.updateContact = asyncHandler(async (req, res) => {
-//   const contact = await contactModel.findById(req.params.id);
-//   if (!contact) {
-//     res.status(404);
-//     console.error("Contact not found");
-//   }
-
-//   const updatedcontact = await contactModel.findByIdAndUpdate(
-//     req.params.id,
-//     req.body, 
-//     { new: true }
-//   );
-  
-//   res.status(200).json({
-//     error: false,
-//     data: updatedcontact,
-//   });
-// });
 // Put Method End
 
 // DELETE DATA: Delete Method

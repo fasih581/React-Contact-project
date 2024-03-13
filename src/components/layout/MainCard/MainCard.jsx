@@ -6,7 +6,7 @@ import Table from "react-bootstrap/Table";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import DeletModal from "../modal/DeletModal/DeletModal";
 import EditModal from "../modal/EditModal/EditModal";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; 
 
 const MainCard = ({ currentPage }) => {
   const dispatch = useDispatch();
@@ -71,10 +71,10 @@ const MainCard = ({ currentPage }) => {
       )}
       {deletModalOpen && (
         <DeletModal
-          deletModalclose={() => satDeletModalOpen(false)}
+          deletModalclose={() => satDeletModalOpen(false)} 
           contactId={deletModalOpen}
         />
-      )}
+      )} 
       {isLoading && <div className={MainCss.loading}> Loading .... </div>}
       {error && <div className={MainCss.error}> {error} </div>}
     </>
